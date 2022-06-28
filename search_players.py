@@ -1,20 +1,19 @@
-from math import ulp
-import requests
-import random
+'''Script for getting player steam id with public game list and save it to
+user.json'''
 import json
-import time
-import nh_tools.file
 import pathlib
+import random
+import time
 
-#start = 76561197960265729
-start = 76561198083927294 - 1
-end = 76561198899999999
-steam_id = start
+import nh_tools.file
+import requests
+
+START = 76561198083927293
+END = 76561198899999999
 steam_ids = nh_tools.file.open_json(pathlib.Path('users.json'), [])
 steam_ids = set(steam_ids)
-while len(steam_ids) < 100:
-    steam_id += 1
-    #steam_id = random.randrange(start, end)
+while len(steam_ids) < 200:
+    steam_id = random.randrange(START, END)
     time.sleep(4)
     try:
         url = f"http://127.0.0.1:5000/get-playtime/{steam_id}"
