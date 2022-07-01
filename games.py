@@ -31,6 +31,11 @@ class Game:
         return statistics.median(self.playtime)
 
     @property
+    def high_median_playtime(self):
+        return statistics.median(
+            [pt for pt in self.playtime if pt >= self.median_playtime])
+
+    @property
     def max_playtime(self):
         return max(self.playtime)
 
@@ -50,6 +55,7 @@ class Game:
             'total_playtime': self.total_playtime,
             'mean_playtime': self.mean_playtime,
             'median_playtime': self.median_playtime,
+            'high_median_playtime': self.high_median_playtime,
             'max_playtime': self.max_playtime,
             'min_playtime': self.min_playtime,
             'player_count': self.player_count,
@@ -68,6 +74,12 @@ class Games:
         else:
             self._load()
 
+    def have(self, game_id):
+        for game in self.games:
+            if game.id == game_id:
+                return True
+        return False
+
     def _get_or_add_game(self, game_id, game_name):
         for game in self.games:
             if game.id == game_id:
@@ -75,19 +87,25 @@ class Games:
         self.games.append(Game(game_id, game_name))
         return self.games[-1]
 
+    def get_game(self, game_id):
+        for game in self.games:
+            if game.id == game_id:
+                return game
+
     def _update(self):
         i = 0
         steam_ids_count = len(self.steam_ids)
         for steam_id in self.steam_ids:
             i += 1
-            print(f'Process {i}/{steam_ids_count}')
+            if i % 100 == 0:
+                print(f'Process games {i}/{steam_ids_count}')
             url = f'http://127.0.0.1:5000/get-playtime/{steam_id}'
             result = requests.get(url)
             playtime = result.json()
             for pt in playtime:
                 game = self._get_or_add_game(pt['game_id'], pt['game_name'])
                 game.add_playtime(pt['minutes'] / 60)
-        self.games = [game for game in self.games if game.player_count >= 5]
+        self.games = [game for game in self.games if game.player_count >= 8]
 
     @property
     def __dict__(self):
