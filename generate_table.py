@@ -16,6 +16,8 @@ def main():
     games.save_to_csv()
     players = Players(steam_ids, games)
     players.save_to_csv()
+    players.save_sim_to_csv()
+    players.get_recommendations('Niko Honu')
 
 
 if __name__ == '__main__':

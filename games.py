@@ -105,7 +105,7 @@ class Games:
             for pt in playtime:
                 game = self._get_or_add_game(pt['game_id'], pt['game_name'])
                 game.add_playtime(pt['minutes'] / 60)
-        self.games = [game for game in self.games if game.player_count >= 8]
+        self.games = [game for game in self.games if game.player_count >= 4]
 
     @property
     def __dict__(self):

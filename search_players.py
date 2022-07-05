@@ -12,7 +12,7 @@ START = 76561198083927293
 END = 76561198899999999
 steam_ids = nh_tools.file.open_json(pathlib.Path('steam_ids.json'), [])
 steam_ids = set(steam_ids)
-while len(steam_ids) < 1000:
+while len(steam_ids) < 2000:
     steam_id = random.randrange(START, END)
     time.sleep(4)
     try:
