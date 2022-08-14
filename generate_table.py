@@ -2,9 +2,6 @@
 import json
 from pathlib import Path
 
-import pandas as pd
-import requests
-
 from games import Games
 from players import Players
 
@@ -17,7 +14,7 @@ def main():
     players = Players(steam_ids, games)
     players.save_to_csv()
     players.save_sim_to_csv()
-    players.get_recommendations('Niko Honu')
+    players.get_recommendations('andinoriel')
 
 
 if __name__ == '__main__':

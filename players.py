@@ -91,7 +91,7 @@ class Players:
                             pt['game_id'],
                             pt['game_name'],
                             pt['minutes'] / 60)
-                if len(player.games) >= 5:
+                if len(player.games) >= 6:
                     self.players.append(player)
             except requests.exceptions.JSONDecodeError:
                 print(steam_id)

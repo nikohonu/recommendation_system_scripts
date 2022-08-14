@@ -32,8 +32,8 @@ class Game:
 
     @property
     def high_median_playtime(self):
-        return statistics.median(
-            [pt for pt in self.playtime if pt >= self.median_playtime])
+        return statistics.median([pt for pt in self.playtime
+                                  if pt >= self.median_playtime])
 
     @property
     def max_playtime(self):
@@ -105,7 +105,7 @@ class Games:
             for pt in playtime:
                 game = self._get_or_add_game(pt['game_id'], pt['game_name'])
                 game.add_playtime(pt['minutes'] / 60)
-        self.games = [game for game in self.games if game.player_count >= 4]
+        self.games = [game for game in self.games if game.player_count >= 5]
 
     @property
     def __dict__(self):

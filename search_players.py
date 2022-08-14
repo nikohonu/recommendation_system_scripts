@@ -5,24 +5,23 @@ import pathlib
 import random
 import time
 
-import nh_tools.file
 import requests
 
 START = 76561198083927293
 END = 76561198899999999
-steam_ids = nh_tools.file.open_json(pathlib.Path('steam_ids.json'), [])
-steam_ids = set(steam_ids)
-while len(steam_ids) < 2000:
+with pathlib.Path('steam_ids.json').open() as data_file:
+    steam_ids = set(json.load(data_file))
+while len(steam_ids) < 1300:
     steam_id = random.randrange(START, END)
     time.sleep(4)
     try:
-        url = f"http://127.0.0.1:5000/get-playtime/{steam_id}"
+        url = f"http://127.0.0.1:5001/get-playtime/{steam_id}"
         print(url, len(steam_ids))
         result = requests.get(url)
         result = result.json()
         steam_ids.add(steam_id)
-        nh_tools.file.save_json(pathlib.Path(
-            'steam_ids.json'), list(steam_ids))
+        with pathlib.Path('steam_ids.json').open('w') as data_file:
+            json.dump(list(steam_ids), data_file)
         print('ok')
     except json.decoder.JSONDecodeError:
         continue
