@@ -11,7 +11,7 @@ START = 76561198083927293
 END = 76561198899999999
 with pathlib.Path('steam_ids.json').open() as data_file:
     steam_ids = set(json.load(data_file))
-while len(steam_ids) < 1300:
+while len(steam_ids) < 2000:
     steam_id = random.randrange(START, END)
     time.sleep(4)
     try:
