@@ -21,28 +21,28 @@ def check_user(steam_id):  # check if user exist or have a least 1 game on accou
 
 def register(steam_id):
     response = requests.get(
-        f'http://127.0.0.1:5000/steam/get-profile/{steam_id}')
+        f'http://127.0.0.1:5000/steam/get-player-summary/{steam_id}')
     if response.status_code != 404:
-        profile = response.json()
+        player = response.json()
+        name = player['personaname']
+        profile_url = player['profileurl']
         response = requests.post(
             'http://127.0.0.1:5000/auth/register',
-            {'username': profile['name'],
-             'password': '42774277', 'steam_profile_url': profile['url']})
+            {'username': name,
+             'password': '42774277', 'steam_profile_url': profile_url})
         response = requests.get(
-            f'http://127.0.0.1:5000/user/{profile["name"]}')
-        response = requests.get(
-            f'http://127.0.0.1:5000/user/{profile["name"]}/games')
+            f'http://127.0.0.1:5000/user/{name}/games')
         if not check_user(steam_id):
             response = requests.post(
                 'http://127.0.0.1:5000/auth/delete',
-                {'username': profile['name'], 'password': '42774277'})
+                {'username': name, 'password': '42774277'})
         else:
             return True
     return False
 
 
-def find_new_user():
-    pass
+# def find_new_user():
+#     pass
 
 
 parser = argparse.ArgumentParser(
@@ -56,6 +56,7 @@ with pathlib.Path('steam_ids.json').open() as data_file:
     steam_ids = json.load(data_file)
 i = 1
 bad_steam_ids = []
+print(len(steam_ids))
 for steam_id in steam_ids:
     if check_user(steam_id):
         i += 1
