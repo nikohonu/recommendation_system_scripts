@@ -53,7 +53,7 @@ args = parser.parse_args()
 print(args.count)
 
 with pathlib.Path('steam_ids.json').open() as data_file:
-    steam_ids = json.load(data_file)
+    steam_ids = set(json.load(data_file))
 i = 1
 bad_steam_ids = []
 print(len(steam_ids))
